@@ -454,150 +454,68 @@ input,select{
 }
 
 @media(max-width:750px){
-    body{
-        min-width:0;
-        overflow-x:hidden;
-    }
-
-    .header{
-        height:auto;
-        min-height:60px;
-        padding:10px 12px;
-        gap:8px;
-        flex-wrap:wrap;
-    }
-
-    .logo{
-        font-size:21px;
-    }
-
-    .turn{
-        padding:8px 10px;
-        font-size:12px;
-        margin-left:auto;
+    .player-grid{
+        grid-template-columns:1fr 1fr;
     }
 
     .game{
         padding:8px;
     }
 
-    .layout{
-        display:flex;
-        flex-direction:column;
-        gap:10px;
-        width:100%;
-    }
-
     .board-area{
+        padding:6px;
+        overflow:hidden;
         width:100%;
-        padding:7px;
-        border-radius:16px;
-        overflow:visible;
     }
 
     .board{
         width:100%;
+        max-width:100vw;
         min-width:0;
-        max-width:100%;
         gap:2px;
         padding:3px;
         border-radius:12px;
     }
 
     .cell{
-        min-width:0;
-        min-height:0;
         padding:2px;
         border-radius:4px;
         font-size:clamp(5px,1.8vw,9px);
     }
 
-    .cell-name{
-        overflow:hidden;
-        word-break:break-word;
-    }
-
     .cell-price{
-        font-size:clamp(5px,1.55vw,8px);
+        font-size:clamp(5px,1.5vw,8px);
     }
 
     .property-bar{
         height:3px;
-        margin:-2px -2px 1px;
+        margin:-2px -2px 2px;
     }
 
     .tokens{
-        min-height:clamp(9px,3vw,20px);
+        min-height:10px;
         gap:1px;
     }
 
     .token{
-        width:clamp(10px,4.5vw,20px);
-        height:clamp(10px,4.5vw,20px);
+        width:clamp(12px,4vw,20px);
+        height:clamp(12px,4vw,20px);
+        font-size:clamp(6px,1.8vw,9px);
         border-width:1px;
-        font-size:clamp(5px,1.8vw,9px);
     }
 
     .center{
+        border-radius:10px;
         padding:5px;
-        border-radius:9px;
     }
 
     .center h2{
-        font-size:clamp(14px,5vw,32px);
+        font-size:clamp(16px,6vw,32px);
     }
 
     .center p{
-        margin-top:2px;
-        font-size:clamp(7px,2.2vw,14px);
-    }
-
-    .sidebar{
-        width:100%;
-    }
-
-    .panel{
-        padding:11px;
-        border-radius:14px;
-    }
-
-    .actions{
-        grid-template-columns:repeat(2,minmax(0,1fr));
-    }
-
-    button{
-        min-height:46px;
-        padding:11px 10px;
-        font-size:14px;
-        touch-action:manipulation;
-    }
-
-    .log{
-        height:150px;
-        font-size:11px;
-    }
-
-    .dice-modal{
-        padding:12px;
-    }
-
-    .dice{
-        width:82px;
-        height:82px;
-        font-size:42px;
-        border-radius:16px;
-        margin:6px;
-    }
-
-    .modal{
-        padding:12px;
-    }
-
-    .modal-content{
-        max-height:90vh;
-        overflow:auto;
-        padding:18px;
-        border-radius:18px;
+        font-size:clamp(7px,2.2vw,12px);
+        margin-top:3px;
     }
 }
 
@@ -607,49 +525,8 @@ input,select{
     }
 
     .setup{
-        margin:10px;
-        padding:16px;
-        border-radius:18px;
-    }
-
-    .setup h1{
-        font-size:30px;
-    }
-
-    .subtitle{
-        font-size:14px;
-    }
-
-    .stats{
-        grid-template-columns:1fr 1fr;
-    }
-
-    .stat{
-        padding:8px;
-        font-size:12px;
-    }
-
-    .player-card{
-        font-size:12px;
-    }
-}
-
-@media(max-width:360px){
-    .game{
-        padding:5px;
-    }
-
-    .board-area{
-        padding:4px;
-    }
-
-    .actions{
-        grid-template-columns:1fr;
-    }
-
-    .board{
-        gap:1px;
-        padding:2px;
+        margin:15px;
+        padding:20px;
     }
 }
 </style>
@@ -887,47 +764,135 @@ CASAS DO TABULEIRO
 */
 
 const spaces=[
-    ["INÍCIO","start",0],
-    ["CASA POPULAR","property",5000],
-    ["CASA SIMPLES","property",8000],
-    ["SALÁRIO","salary",0],
-    ["LOJA DE CARROS","car",0],
-    ["PARQUE","event",0],
-    ["TERRENO CENTRAL","property",10000],
-    ["IMPOSTO","tax",0],
-    ["SORTE","event",0],
-    ["CONDOMÍNIO","property",12000],
-    ["ESCOLA","family",0],
-    ["AVENIDA BRASIL","property",15000],
-    ["VIAGEM","event",0],
-    ["BANCO","special",3000],
-    ["SHOPPING","property",20000],
-    ["MULTA","tax",0],
-    ["CASA DE PRAIA","property",25000],
-    ["SORTE","event",0],
-    ["POSTO","car",0],
-    ["CENTRO EMPRESARIAL","property",30000],
-    ["IMPOSTO","tax",0],
-    ["CASAMENTO","family",0],
-    ["MANSÃO","property",40000],
-    ["FÉRIAS","event",0],
-    ["PRISÃO","jail",0],
-    ["LOTE INDUSTRIAL","property",35000],
-    ["SORTE","event",0],
-    ["SUPERMERCADO","property",18000],
-    ["CARRO PREMIUM","car",0],
-    ["MULTA","tax",0],
-    ["HOTEL","property",50000],
-    ["INVESTIMENTO","event",0],
-    ["EMPRESA","property",65000],
-    ["FILHO","family",0],
-    ["AEROPORTO","event",0],
-    ["FAZENDA","property",45000],
-    ["SORTE","event",0],
-    ["NEGÓCIO","property",28000],
-    ["BANCO CENTRAL","special",5000],
-    ["GRANDE MANSÃO","property",90000]
+
+["INÍCIO","start",0],
+
+["CASA POPULAR","property",5000],
+
+["CASA SIMPLES","property",8000],
+
+["BAIRRO NOVO","property",12000],
+
+["SALÁRIO","salary",0],
+
+["LOJA DE CARROS","car",0],
+
+["PARQUE","event",0],
+
+["TERRENO CENTRAL","property",30000],
+
+["IMPOSTO","tax",0],
+
+["SORTE","event",0],
+
+["CONDOMÍNIO","property",42000],
+
+["ESCOLA","family",0],
+
+["AVENIDA BRASIL","property",55000],
+
+["VIAGEM","event",0],
+
+["BANCO","special",3000],
+
+["SHOPPING","property",70000],
+
+["MULTA","tax",1500],
+
+["CASA DE PRAIA","property",90000],
+
+["SORTE","event",0],
+
+["POSTO","car",0],
+
+["CENTRO EMPRESARIAL","property",110000],
+
+["IMPOSTO","tax",3000],
+
+["CASAMENTO","family",0],
+
+["MANSÃO","property",160000],
+
+["FÉRIAS","event",0],
+
+["PRISÃO","jail",0],
+
+["LOTE INDUSTRIAL","property",130000],
+
+["SORTE","event",0],
+
+["SUPERMERCADO","property",80000],
+
+["CARRO PREMIUM","car",0],
+
+["IMPOSTO","tax",0],
+
+["HOTEL","property",180000],
+
+["INVESTIMENTO","event",0],
+
+["EMPRESA","property",220000],
+
+["FILHO","family",0],
+
+["AEROPORTO","event",0],
+
+["FAZENDA","property",150000],
+
+["SORTE","event",0],
+
+["PRISÃO","jail",0],
+
+["NEGÓCIO","property",100000],
+
+["BANCO","special",5000],
+
+["LUXO","property",250000],
+
+["FESTA","event",0],
+
+["ESTÁDIO","property",190000],
+
+["IMPOSTO","tax",4000],
+
+["PORTO","property",210000],
+
+["SORTE","event",0],
+
+["FIM DE SEMANA","event",0],
+
+["NEGÓCIO LOCAL","property",60000],
+
+["LOTERIA","event",0],
+
+["VOLTA AO INÍCIO","special",2000],
+
+["PARQUE AQUÁTICO","property",125000],
+
+["BANCO CENTRAL","special",4000],
+
+["RODOVIÁRIA","event",0],
+
+["HOTEL 5 ESTRELAS","property",300000],
+
+["IMPOSTO","tax",0],
+
+["PRAIA","event",0],
+
+["EMPRESA TECH","property",260000],
+
+["SORTE","event",0],
+
+["CIDADE NOVA","property",100000],
+
+["CARRO ESPORTIVO","car",0],
+
+["INVESTIDOR","special",6000],
+
+["GRANDE MANSÃO","property",400000]
+
 ];
+
 
 let players=[];
 let properties={};
@@ -1061,8 +1026,6 @@ function startGame(){
             alive:true,
 
             jail:0,
-
-            skipTurns:0,
 
             investedThisTurn:false
 
@@ -1354,11 +1317,6 @@ function update(){
                 <strong>${p.happiness}/100</strong>
             </div>
 
-            <div class="stat">
-                <small>🏫 Escola</small>
-                <strong>${p.skipTurns>0?"⏳ 1 rodada":"Livre"}</strong>
-            </div>
-
         </div>
 
     `;
@@ -1481,17 +1439,6 @@ function rollDice(){
 
     if(rolled||gameEnded)return;
 
-    const p=players[current];
-
-    /*
-    PRISÃO: para sair, os dois dados precisam ser pares.
-    Se não conseguir, perde a rodada e continua preso.
-    */
-    if(p.jail>0){
-        rollPrisonDice(p);
-        return;
-    }
-
     const modal=
         document.getElementById("diceModal");
 
@@ -1550,58 +1497,6 @@ function rollDice(){
 
         },100);
 
-}
-
-
-/*
-====================================================
-PRISÃO — DOIS DADOS PARES PARA SAIR
-====================================================
-*/
-
-function rollPrisonDice(p){
-
-    const modal=document.getElementById("diceModal");
-    const d1=document.getElementById("dice1");
-    const d2=document.getElementById("dice2");
-
-    modal.classList.add("show");
-    d1.classList.add("rolling");
-    d2.classList.add("rolling");
-
-    let ticks=0;
-    const animation=setInterval(()=>{
-        d1.textContent=Math.floor(Math.random()*6)+1;
-        d2.textContent=Math.floor(Math.random()*6)+1;
-        ticks++;
-
-        if(ticks>=12){
-            clearInterval(animation);
-            const n1=Math.floor(Math.random()*6)+1;
-            const n2=Math.floor(Math.random()*6)+1;
-            d1.textContent=n1;
-            d2.textContent=n2;
-            d1.classList.remove("rolling");
-            d2.classList.remove("rolling");
-
-            setTimeout(()=>{
-                modal.classList.remove("show");
-                rolled=true;
-
-                const saiu=(n1%2===0 && n2%2===0);
-
-                if(saiu){
-                    p.jail=0;
-                    log(`🔓 ${p.name} tirou ${n1} e ${n2}: os dois são pares! Saiu da prisão.`);
-                    update();
-                    setTimeout(()=>movePlayer(n1+n2),300);
-                }else{
-                    log(`🚓 ${p.name} tirou ${n1} e ${n2}. Precisa de dois números pares para sair da prisão.`);
-                    update();
-                }
-            },700);
-        }
-    },100);
 }
 
 
@@ -1669,188 +1564,84 @@ CAIR NA CASA
 
 function land(){
 
-    const p=players[current];
-    const s=spaces[p.position];
+    const p=
+        players[current];
+
+    const s=
+        spaces[p.position];
+
 
     rolled=true;
 
-    // Casas especiais da cidade
-    if(s[0]==="PARQUE"){
-        park(p);
-        return;
-    }
-
-    if(s[0]==="ESCOLA"){
-        school(p);
-        return;
-    }
-
-    if(s[0]==="VIAGEM"){
-        travel(p);
-        return;
-    }
-
-    if(s[0]==="BANCO" || s[0]==="BANCO CENTRAL"){
-        bankReward(p);
-        return;
-    }
-
-    if(s[0]==="MULTA"){
-        fine(p);
-        return;
-    }
 
     if(s[1]==="property"){
+
         property(p,p.position);
+
     }
+
     else if(s[1]==="tax"){
+
         tax(p,p.position);
+
     }
+
     else if(s[1]==="event"){
+
         event(p);
+
     }
+
     else if(s[1]==="family"){
+
         family(p,s[0]);
+
     }
+
     else if(s[1]==="car"){
+
         openCars();
+
     }
+
     else if(s[1]==="special"){
+
         special(p,s);
+
     }
+
     else if(s[1]==="salary"){
+
         p.money+=p.salary;
-        log(`💼 ${p.name} recebeu ${money(p.salary)} de salário.`);
+
+        log(
+            `💼 ${p.name} recebeu ${money(p.salary)} de salário.`
+        );
+
         update();
+
     }
+
     else if(s[1]==="jail"){
+
         p.jail=1;
+
         p.position=23;
-        log(`🚓 ${p.name} caiu na prisão! Para sair, precisa tirar os dois dados pares.`);
+
+        log(
+            `🚓 ${p.name} foi para a prisão.`
+        );
+
         update();
+
     }
+
     else{
+
         update();
+
     }
 
-}
-
-
-/*
-====================================================
-CASAS INTERATIVAS
-====================================================
-*/
-
-function miniDice(title, description, callback){
-    showModal(
-        title,
-        `<p>${description}</p>
-         <div style="text-align:center;margin:18px 0">
-            <div id="miniDice" style="font-size:58px;font-weight:900;background:#fff;color:#111827;border-radius:18px;padding:12px;display:inline-block;min-width:90px;box-shadow:0 8px 25px #0008">?</div>
-         </div>`,
-        [{
-            text:"🎲 JOGAR DADO",
-            action:()=>{
-                const el=document.getElementById("miniDice");
-                let n=0, ticks=0;
-                const timer=setInterval(()=>{
-                    n=Math.floor(Math.random()*6)+1;
-                    el.textContent=n;
-                    ticks++;
-                    if(ticks>=8){
-                        clearInterval(timer);
-                        const final=Math.floor(Math.random()*6)+1;
-                        el.textContent=final;
-                        setTimeout(()=>callback(final),450);
-                    }
-                },90);
-            }
-        }]
-    );
-}
-
-function park(p){
-    const options=[
-        {name:"🎢 Parque de diversões", cost:1000, mult:1800, text:"Você se divertiu muito! Jogue o dado e receba o valor do dado × R$ 1.800."},
-        {name:"⚽ Jogar futebol", cost:500, mult:2500, text:"Você entrou em um torneio no parque! Dado × R$ 2.500."},
-        {name:"🍔 Piquenique", cost:300, mult:1200, text:"Um piquenique tranquilo. Dado × R$ 1.200 e +5 de felicidade."},
-        {name:"🎡 Roda-gigante", cost:800, mult:2000, text:"Uma volta incrível! Dado × R$ 2.000."}
-    ];
-    showModal("🌳 PARQUE CAIO CITY", "<p>Escolha o que você quer fazer no parque:</p>" + options.map((o,i)=>`<div class="shop"><strong>${o.name}</strong><br>💸 Custo: ${money(o.cost)}<br><small>${o.text}</small><button onclick="choosePark(${i})">ESCOLHER</button></div>`).join(""), [{text:"FECHAR",action:closeModal}]);
-    window._parkOptions=options;
-}
-
-function choosePark(i){
-    const p=players[current];
-    const o=window._parkOptions[i];
-    if(p.money<o.cost){ alert("Dinheiro insuficiente para essa atividade."); return; }
-    p.money-=o.cost;
-    closeModal();
-    miniDice(o.name, o.text, n=>{
-        const reward=n*o.mult;
-        p.money+=reward;
-        if(i===2) p.happiness=Math.min(100,p.happiness+5);
-        log(`🌳 ${p.name} foi ao parque, tirou ${n} e ganhou ${money(reward)}.`);
-        update();
-    });
-}
-
-function school(p){
-    showModal("🏫 ESCOLA", `<p>Você caiu na escola.</p><p>Você vai estudar e <strong>perder a próxima rodada</strong>, mas pode aumentar seu salário.</p>`, [
-        {text:"📚 ESTUDAR", action:()=>{
-            p.skipTurns=1;
-            p.salary+=1000;
-            p.happiness=Math.max(0,p.happiness-3);
-            log(`🏫 ${p.name} ficou uma rodada na escola e aumentou o salário em ${money(1000)}.`);
-            closeModal(); update();
-        }},
-        {text:"🏃 MATAR AULA", action:()=>{
-            p.skipTurns=0;
-            log(`🏫 ${p.name} decidiu não estudar.`);
-            closeModal(); update();
-        }}
-    ]);
-}
-
-function travel(p){
-    const trips=[
-        {name:"🏖️ Praia",cost:3000,happy:15,reward:1000},
-        {name:"🏔️ Montanha",cost:5000,happy:20,reward:3000},
-        {name:"🇧🇷 Viagem pelo Brasil",cost:8000,happy:25,reward:5000},
-        {name:"✈️ Internacional",cost:15000,happy:35,reward:10000}
-    ];
-    showModal("✈️ AGÊNCIA DE VIAGENS", "<p>Escolha sua viagem e pague o valor:</p>" + trips.map((t,i)=>`<div class="shop"><strong>${t.name}</strong><br>💸 ${money(t.cost)}<br>❤️ +${t.happy} felicidade<br>🎁 Bônus: ${money(t.reward)}<button onclick="chooseTrip(${i})">VIAJAR</button></div>`).join(""), [{text:"FECHAR",action:closeModal}]);
-    window._trips=trips;
-}
-
-function chooseTrip(i){
-    const p=players[current], t=window._trips[i];
-    if(p.money<t.cost){ alert("Dinheiro insuficiente para essa viagem."); return; }
-    p.money-=t.cost;
-    p.happiness=Math.min(100,p.happiness+t.happy);
-    p.money+=t.reward;
-    log(`✈️ ${p.name} viajou em ${t.name} e recebeu bônus de ${money(t.reward)}.`);
-    closeModal(); update();
-}
-
-function bankReward(p){
-    miniDice("🏦 BANCO CAIO CITY", "O banco liberou uma bonificação. Jogue o dado: cada ponto vale R$ 1.500.", n=>{
-        const gain=n*1500;
-        p.money+=gain;
-        log(`🏦 ${p.name} tirou ${n} no dado e recebeu ${money(gain)} do banco.`);
-        update();
-    });
-}
-
-function fine(p){
-    miniDice("🚨 MULTA", "Você recebeu uma multa. Jogue o dado: cada ponto vale R$ 700.", n=>{
-        const loss=n*700;
-        p.money-=loss;
-        log(`🚨 ${p.name} tirou ${n} e pagou uma multa de ${money(loss)}.`);
-        bankruptcy(p);
-        update();
-    });
 }
 
 
@@ -2103,7 +1894,7 @@ function event(p){
             "🚗 MANUTENÇÃO",
             "Seu carro precisou de manutenção.",
             ()=>{
-                p.money-=p.car ? 2500 : 500;
+                p.money-=p.car?2500:500;
             }
         ],
 
@@ -2636,28 +2427,6 @@ function nextTurn(){
 
     const p=
         players[current];
-
-
-    /*
-    ESCOLA: fica uma rodada parado estudando.
-    */
-    if(p.skipTurns>0){
-        p.skipTurns--;
-        log(`🏫 ${p.name} passou esta rodada na escola. Não jogou os dados.`);
-        rolled=false;
-
-        let next=current+1;
-        while(true){
-            if(next>=players.length) next=0;
-            if(players[next].alive) break;
-            next++;
-        }
-        current=next;
-        players[current].investedThisTurn=false;
-        log(`➡️ Agora é a vez de ${players[current].name}.`);
-        update();
-        return;
-    }
 
 
     /*
