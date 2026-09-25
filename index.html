@@ -1,0 +1,2780 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Caio City</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:
+        radial-gradient(circle at top,#263b68 0%,#0b1020 45%,#050812 100%);
+    color:#fff;
+    min-height:100vh;
+}
+
+button{
+    border:0;
+    cursor:pointer;
+    font-weight:bold;
+    border-radius:12px;
+    padding:12px 18px;
+    transition:.2s;
+}
+
+button:hover{
+    transform:translateY(-2px);
+    filter:brightness(1.1);
+}
+
+button:disabled{
+    opacity:.4;
+    cursor:not-allowed;
+    transform:none;
+}
+
+.header{
+    height:75px;
+    padding:0 25px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:rgba(5,10,25,.92);
+    border-bottom:1px solid #334155;
+    position:sticky;
+    top:0;
+    z-index:20;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:900;
+    letter-spacing:1px;
+}
+
+.logo span{
+    color:#facc15;
+}
+
+.turn{
+    background:#172033;
+    border:1px solid #334155;
+    padding:10px 16px;
+    border-radius:12px;
+    color:#facc15;
+    font-weight:bold;
+}
+
+.setup{
+    max-width:900px;
+    margin:50px auto;
+    background:rgba(15,23,42,.94);
+    padding:35px;
+    border-radius:25px;
+    border:1px solid #334155;
+    box-shadow:0 30px 80px #0009;
+}
+
+.setup h1{
+    font-size:42px;
+    margin-bottom:8px;
+}
+
+.setup h1 span{
+    color:#facc15;
+}
+
+.subtitle{
+    color:#94a3b8;
+    margin-bottom:25px;
+}
+
+.player-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin-top:20px;
+}
+
+.player-box{
+    background:#0b1220;
+    border:1px solid #334155;
+    padding:16px;
+    border-radius:16px;
+}
+
+.player-title{
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+input,select{
+    width:100%;
+    padding:12px;
+    background:#111827;
+    border:1px solid #475569;
+    color:#fff;
+    border-radius:10px;
+    margin-top:6px;
+    margin-bottom:10px;
+}
+
+.start{
+    width:100%;
+    margin-top:20px;
+    background:linear-gradient(135deg,#facc15,#f59e0b);
+    font-size:19px;
+}
+
+.game{
+    display:none;
+    padding:20px;
+}
+
+.layout{
+    max-width:1500px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:minmax(650px,1fr) 350px;
+    gap:20px;
+}
+
+.board-area{
+    background:rgba(15,23,42,.9);
+    border:1px solid #334155;
+    padding:15px;
+    border-radius:25px;
+    box-shadow:0 25px 70px #0008;
+}
+
+.board{
+    width:min(850px,100%);
+    aspect-ratio:1;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(11,1fr);
+    grid-template-rows:repeat(11,1fr);
+    gap:4px;
+    background:#020617;
+    padding:5px;
+    border-radius:18px;
+}
+
+.cell{
+    position:relative;
+    background:#f8fafc;
+    color:#111827;
+    border-radius:7px;
+    padding:5px;
+    font-size:9px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    overflow:hidden;
+    box-shadow:inset 0 0 0 1px #cbd5e1;
+}
+
+.cell-name{
+    font-weight:900;
+    text-align:center;
+    line-height:1.1;
+}
+
+.cell-price{
+    text-align:center;
+    font-size:8px;
+    color:#475569;
+}
+
+.property-bar{
+    height:6px;
+    margin:-5px -5px 3px;
+}
+
+.start{
+    background:#fde68a!important;
+}
+
+.event{
+    background:#e9d5ff!important;
+}
+
+.tax{
+    background:#fecaca!important;
+}
+
+.family{
+    background:#fbcfe8!important;
+}
+
+.car{
+    background:#bfdbfe!important;
+}
+
+.special{
+    background:#bae6fd!important;
+}
+
+.jail{
+    background:#94a3b8!important;
+}
+
+.center{
+    grid-column:2 / 11;
+    grid-row:2 / 11;
+    background:
+        radial-gradient(circle,#1e3a8a,#0f172a);
+    border-radius:15px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:20px;
+}
+
+.center h2{
+    font-size:clamp(28px,5vw,60px);
+    color:#facc15;
+    text-shadow:0 5px 20px #000;
+}
+
+.center p{
+    color:#cbd5e1;
+    margin-top:8px;
+}
+
+.tokens{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:2px;
+    min-height:20px;
+}
+
+.token{
+    width:20px;
+    height:20px;
+    border-radius:50%;
+    border:2px solid white;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:9px;
+    font-weight:bold;
+    box-shadow:0 2px 5px #0008;
+}
+
+.sidebar{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.panel{
+    background:rgba(15,23,42,.94);
+    border:1px solid #334155;
+    border-radius:18px;
+    padding:15px;
+}
+
+.panel-title{
+    font-size:17px;
+    font-weight:bold;
+    margin-bottom:12px;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:7px;
+}
+
+.stat{
+    background:#0b1220;
+    padding:10px;
+    border-radius:10px;
+}
+
+.stat small{
+    display:block;
+    color:#94a3b8;
+    margin-bottom:4px;
+}
+
+.actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+}
+
+.action{
+    background:#facc15;
+    color:#111827;
+}
+
+.players-list{
+    max-height:240px;
+    overflow:auto;
+}
+
+.player-card{
+    background:#0b1220;
+    border-radius:10px;
+    padding:9px;
+    margin-bottom:7px;
+    border-left:5px solid;
+}
+
+.player-card.active{
+    box-shadow:0 0 0 2px #facc15;
+}
+
+.log{
+    height:180px;
+    overflow:auto;
+    background:#050b16;
+    padding:10px;
+    border-radius:10px;
+    font-size:12px;
+}
+
+.log div{
+    padding:5px 0;
+    border-bottom:1px solid #1e293b;
+}
+
+.dice-modal{
+    position:fixed;
+    inset:0;
+    background:#000b;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:100;
+}
+
+.dice-modal.show{
+    display:flex;
+}
+
+.dice-box{
+    text-align:center;
+}
+
+.dice-box h2{
+    margin-bottom:25px;
+}
+
+.dice{
+    width:110px;
+    height:110px;
+    background:white;
+    border-radius:20px;
+    color:#111;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:55px;
+    font-weight:900;
+    margin:10px;
+    box-shadow:0 15px 40px #000;
+}
+
+.dice-row{
+    display:flex;
+    justify-content:center;
+}
+
+.dice.rolling{
+    animation:diceRoll .6s infinite;
+}
+
+@keyframes diceRoll{
+    0%{transform:rotate(0) scale(1)}
+    25%{transform:rotate(90deg) scale(1.15)}
+    50%{transform:rotate(180deg) scale(.9)}
+    75%{transform:rotate(270deg) scale(1.15)}
+    100%{transform:rotate(360deg) scale(1)}
+}
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:#000b;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:200;
+    padding:20px;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-content{
+    background:#172033;
+    width:100%;
+    max-width:500px;
+    padding:25px;
+    border-radius:22px;
+    border:1px solid #475569;
+    box-shadow:0 30px 80px #000;
+}
+
+.modal-content h2{
+    margin-bottom:15px;
+}
+
+.modal-content button{
+    width:100%;
+    margin-top:8px;
+}
+
+.shop{
+    background:#0b1220;
+    padding:12px;
+    margin:8px 0;
+    border-radius:10px;
+}
+
+@media(max-width:1100px){
+    .layout{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:750px){
+    .player-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .board{
+        min-width:650px;
+    }
+
+    .board-area{
+        overflow:auto;
+    }
+}
+
+@media(max-width:500px){
+    .player-grid{
+        grid-template-columns:1fr;
+    }
+
+    .setup{
+        margin:15px;
+        padding:20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="logo">
+        🏙️ <span>CAIO</span> CITY
+    </div>
+
+    <div id="turn" class="turn">
+        Nova partida
+    </div>
+
+</header>
+
+
+<section id="setup" class="setup">
+
+    <h1>🏙️ <span>Caio City</span></h1>
+
+    <p class="subtitle">
+        Construa sua vida. Compre casas, carros, forme sua família
+        e se torne o maior magnata da cidade.
+    </p>
+
+    <label>
+        Número de jogadores
+        <select id="playerCount" onchange="createInputs()">
+            <option value="2">2 jogadores</option>
+            <option value="3">3 jogadores</option>
+            <option value="4">4 jogadores</option>
+            <option value="5">5 jogadores</option>
+            <option value="6">6 jogadores</option>
+        </select>
+    </label>
+
+    <div id="playerInputs" class="player-grid"></div>
+
+    <button class="start" onclick="startGame()">
+        🚀 COMEÇAR CAIO CITY
+    </button>
+
+</section>
+
+
+<section id="game" class="game">
+
+<div class="layout">
+
+<div class="board-area">
+
+<div id="board" class="board">
+
+<div class="center">
+
+<h2>CAIO CITY</h2>
+
+<p>
+🏠 Construa sua cidade
+</p>
+
+<p>
+🚗 Compre seu carro
+</p>
+
+<p>
+👨‍👩‍👧 Forme sua família
+</p>
+
+<p>
+💰 Fique milionário
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+<aside class="sidebar">
+
+
+<div class="panel">
+
+<div class="panel-title">
+👤 Jogador atual
+</div>
+
+<div id="currentPlayer"></div>
+
+</div>
+
+
+<div class="panel">
+
+<div class="panel-title">
+🎮 Ações
+</div>
+
+<div class="actions">
+
+<button
+id="rollButton"
+class="action"
+onclick="rollDice()">
+
+🎲 JOGAR DADOS
+
+</button>
+
+<button
+class="action"
+onclick="openCars()">
+
+🚗 CARROS
+
+</button>
+
+<button
+class="action"
+onclick="openBank()">
+
+🏦 BANCO
+
+</button>
+
+<button
+class="action"
+onclick="openMarket()">
+
+📈 MERCADO
+
+</button>
+
+<button
+id="nextButton"
+class="action"
+onclick="nextTurn()"
+disabled>
+
+➡️ PRÓXIMO
+
+</button>
+
+</div>
+
+</div>
+
+
+<div class="panel">
+
+<div class="panel-title">
+👥 Jogadores
+</div>
+
+<div id="playersList" class="players-list"></div>
+
+</div>
+
+
+<div class="panel">
+
+<div class="panel-title">
+📜 Cidade
+</div>
+
+<div id="log" class="log"></div>
+
+</div>
+
+
+</aside>
+
+</div>
+
+</section>
+
+
+<div id="diceModal" class="dice-modal">
+
+<div class="dice-box">
+
+<h2>🎲 Os dados estão rolando...</h2>
+
+<div class="dice-row">
+
+<div id="dice1" class="dice rolling">?</div>
+
+<div id="dice2" class="dice rolling">?</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div id="modal" class="modal">
+
+<div id="modalContent" class="modal-content"></div>
+
+</div>
+
+
+<script>
+
+const colors=[
+"#ef4444",
+"#3b82f6",
+"#22c55e",
+"#eab308",
+"#a855f7",
+"#f97316"
+];
+
+const jobs=[
+["Funcionário",3000],
+["Mecânico",4500],
+["Programador",7000],
+["Atleta",6000],
+["Médico",12000],
+["Empresário",9000]
+];
+
+
+/*
+====================================================
+CASAS DO TABULEIRO
+====================================================
+*/
+
+const spaces=[
+    ["INÍCIO","start",0],
+    ["CASA POPULAR","property",5000],
+    ["CASA SIMPLES","property",8000],
+    ["SALÁRIO","salary",0],
+    ["LOJA DE CARROS","car",0],
+    ["PARQUE","event",0],
+    ["TERRENO CENTRAL","property",10000],
+    ["IMPOSTO","tax",0],
+    ["SORTE","event",0],
+    ["CONDOMÍNIO","property",12000],
+    ["ESCOLA","family",0],
+    ["AVENIDA BRASIL","property",15000],
+    ["VIAGEM","event",0],
+    ["BANCO","special",3000],
+    ["SHOPPING","property",20000],
+    ["MULTA","tax",0],
+    ["CASA DE PRAIA","property",25000],
+    ["SORTE","event",0],
+    ["POSTO","car",0],
+    ["CENTRO EMPRESARIAL","property",30000],
+    ["IMPOSTO","tax",0],
+    ["CASAMENTO","family",0],
+    ["MANSÃO","property",40000],
+    ["FÉRIAS","event",0],
+    ["PRISÃO","jail",0],
+    ["LOTE INDUSTRIAL","property",35000],
+    ["SORTE","event",0],
+    ["SUPERMERCADO","property",18000],
+    ["CARRO PREMIUM","car",0],
+    ["MULTA","tax",0],
+    ["HOTEL","property",50000],
+    ["INVESTIMENTO","event",0],
+    ["EMPRESA","property",65000],
+    ["FILHO","family",0],
+    ["AEROPORTO","event",0],
+    ["FAZENDA","property",45000],
+    ["SORTE","event",0],
+    ["NEGÓCIO","property",28000],
+    ["BANCO CENTRAL","special",5000],
+    ["GRANDE MANSÃO","property",90000]
+];
+
+let players=[];
+let properties={};
+let current=0;
+let rolled=false;
+let gameEnded=false;
+
+
+/*
+====================================================
+CRIAR JOGADORES
+====================================================
+*/
+
+function createInputs(){
+
+    const count=
+        Number(document.getElementById("playerCount").value);
+
+    const area=
+        document.getElementById("playerInputs");
+
+    area.innerHTML="";
+
+    for(let i=0;i<count;i++){
+
+        area.innerHTML+=`
+
+        <div class="player-box">
+
+            <div
+            class="player-title"
+            style="color:${colors[i]}">
+
+            ● Jogador ${i+1}
+
+            </div>
+
+            <label>
+            Nome
+
+            <input
+            id="name${i}"
+            value="Jogador ${i+1}"
+            maxlength="18">
+
+            </label>
+
+            <label>
+            Profissão
+
+            <select id="job${i}">
+
+            ${jobs.map((j,index)=>`
+
+                <option value="${index}">
+                    ${j[0]} — R$ ${j[1].toLocaleString("pt-BR")}
+                </option>
+
+            `).join("")}
+
+            </select>
+
+            </label>
+
+        </div>
+
+        `;
+
+    }
+
+}
+
+createInputs();
+
+
+/*
+====================================================
+INICIAR
+====================================================
+*/
+
+function startGame(){
+
+    const count=
+        Number(document.getElementById("playerCount").value);
+
+    players=[];
+
+    for(let i=0;i<count;i++){
+
+        const job=
+            jobs[
+                Number(
+                    document.getElementById("job"+i).value
+                )
+            ];
+
+        players.push({
+
+            id:i,
+
+            name:
+                document.getElementById("name"+i).value
+                ||"Jogador "+(i+1),
+
+            money:20000,
+
+            position:0,
+
+            job:job[0],
+
+            salary:job[1],
+
+            family:false,
+
+            children:0,
+
+            childList:[],
+
+            car:null,
+
+            happiness:70,
+
+            loan:0,
+
+            houses:0,
+
+            alive:true,
+
+            jail:0,
+
+            skipTurns:0,
+
+            investedThisTurn:false
+
+        });
+
+    }
+
+    current=0;
+
+    rolled=false;
+
+    gameEnded=false;
+
+    properties={};
+
+    document.getElementById("setup").style.display="none";
+
+    document.getElementById("game").style.display="block";
+
+    buildBoard();
+
+    log("🏙️ Bem-vindo à Caio City!");
+
+    log(
+        "🎮 A partida começou com "+
+        count+
+        " jogadores."
+    );
+
+    log(
+        "👉 É a vez de "+
+        players[0].name+"."
+    );
+
+    update();
+
+}
+
+
+/*
+====================================================
+TABULEIRO
+====================================================
+*/
+
+function buildBoard(){
+
+    const board=
+        document.getElementById("board");
+
+    /*
+    mantém o centro
+    */
+
+    const center=
+        board.querySelector(".center");
+
+    board.innerHTML="";
+
+    const positions=[];
+
+    /*
+    0-10 topo
+    11-20 direita
+    21-30 baixo
+    31-40 esquerda
+    */
+
+    for(let x=0;x<=10;x++)
+        positions.push([1,x+1]);
+
+    for(let y=2;y<=10;y++)
+        positions.push([y,11]);
+
+    for(let x=10;x>=0;x--)
+        positions.push([11,x+1]);
+
+    for(let y=10;y>=2;y--)
+        positions.push([y,1]);
+
+
+    spaces.forEach((space,index)=>{
+
+        const pos=
+            positions[index];
+
+        if(!pos)return;
+
+        const cell=
+            document.createElement("div");
+
+        cell.className=
+            "cell "+space[1];
+
+        cell.style.gridRow=
+            pos[0];
+
+        cell.style.gridColumn=
+            pos[1];
+
+        cell.dataset.index=index;
+
+        const propertyOwner=
+            properties[index];
+
+        let ownerBar="";
+
+        if(space[1]==="property"){
+
+            ownerBar=`
+
+                <div
+                class="property-bar"
+                style="
+                background:
+                ${propertyOwner!==undefined
+                    ?colors[propertyOwner]
+                    :"#64748b"};
+                ">
+                </div>
+
+            `;
+
+        }
+
+        cell.innerHTML=`
+
+            ${ownerBar}
+
+            <div class="cell-name">
+                ${index+1}. ${space[0]}
+            </div>
+
+            <div class="cell-price">
+                ${
+                    space[1]==="property"
+                    ?"R$ "+space[2].toLocaleString("pt-BR")
+                    :icon(space[1])
+                }
+            </div>
+
+            <div
+            class="tokens"
+            id="tokens${index}">
+            </div>
+
+        `;
+
+        board.appendChild(cell);
+
+    });
+
+
+    const middle=
+        document.createElement("div");
+
+    middle.className="center";
+
+    middle.innerHTML=`
+
+        <h2>CAIO CITY</h2>
+
+        <p>🏠 Construa</p>
+        <p>🚗 Compre</p>
+        <p>👨‍👩‍👧 Viva</p>
+        <p>💰 Enriqueça</p>
+
+    `;
+
+    board.appendChild(middle);
+
+}
+
+
+/*
+====================================================
+ÍCONES
+====================================================
+*/
+
+function icon(type){
+
+    const icons={
+
+        start:"💰",
+
+        property:"🏠",
+
+        event:"🎴",
+
+        tax:"💸",
+
+        family:"👨‍👩‍👧",
+
+        car:"🚗",
+
+        special:"🏦",
+
+        jail:"🚓",
+
+        salary:"💼"
+
+    };
+
+    return icons[type]||"";
+
+}
+
+
+/*
+====================================================
+ATUALIZAR TELA
+====================================================
+*/
+
+function update(){
+
+    if(!players.length)return;
+
+    const p=
+        players[current];
+
+
+    document.getElementById("turn").textContent=
+        gameEnded
+        ?"🏆 Fim de jogo"
+        :"🎮 Vez de "+p.name;
+
+
+    document.getElementById("rollButton").disabled=
+        rolled||gameEnded;
+
+    document.getElementById("nextButton").disabled=
+        !rolled||gameEnded;
+
+
+    document.getElementById("currentPlayer").innerHTML=`
+
+        <div class="stats">
+
+            <div class="stat">
+                <small>💰 Dinheiro</small>
+                <strong>
+                    ${money(p.money)}
+                </strong>
+            </div>
+
+            <div class="stat">
+                <small>📊 Patrimônio</small>
+                <strong>
+                    ${money(netWorth(p))}
+                </strong>
+            </div>
+
+            <div class="stat">
+                <small>💼 Profissão</small>
+                <strong>${p.job}</strong>
+            </div>
+
+            <div class="stat">
+                <small>💵 Salário</small>
+                <strong>
+                    ${money(p.salary)}
+                </strong>
+            </div>
+
+            <div class="stat">
+                <small>👨‍👩‍👧 Família</small>
+                <strong>
+                    ${p.family?"💍 Casado":"👤 Solteiro"}
+                </strong>
+            </div>
+
+            <div class="stat">
+                <small>👶 Filhos</small>
+                <strong>${p.children}</strong>
+                <small>${p.childList.length ? p.childList.map(c=>c.name+" ("+c.gender+")").join(", ") : "Nenhum"}</small>
+            </div>
+
+            <div class="stat">
+                <small>🚗 Carro</small>
+                <strong>
+                    ${p.car?p.car.name:"Nenhum"}
+                </strong>
+            </div>
+
+            <div class="stat">
+                <small>❤️ Felicidade</small>
+                <strong>${p.happiness}/100</strong>
+            </div>
+
+            <div class="stat">
+                <small>🏫 Escola</small>
+                <strong>${p.skipTurns>0?"⏳ 1 rodada":"Livre"}</strong>
+            </div>
+
+        </div>
+
+    `;
+
+
+    document.getElementById("playersList").innerHTML=
+
+        players.map(p=>`
+
+            <div
+            class="player-card
+            ${p.id===current?"active":""}
+            ${!p.alive?"dead":""}"
+            style="border-color:${colors[p.id]}">
+
+                <strong>${p.name}</strong>
+
+                <br>
+
+                💰 ${money(p.money)}
+
+                <br>
+
+                📊 ${money(netWorth(p))}
+
+                <br>
+
+                ${p.family?"💍":"👤"}
+                ${p.children} filho(s)
+
+                ${p.car?" 🚗":" 🚶"}
+
+            </div>
+
+        `).join("");
+
+
+    /*
+    PEÕES
+    */
+
+    spaces.forEach((_,index)=>{
+
+        const box=
+            document.getElementById("tokens"+index);
+
+        if(!box)return;
+
+        box.innerHTML=
+            players
+            .filter(
+                p=>p.alive&&p.position===index
+            )
+            .map(
+                p=>`
+
+                <div
+                class="token"
+                style="background:${colors[p.id]}">
+
+                ${p.id+1}
+
+                </div>
+
+                `
+            ).join("");
+
+    });
+
+}
+
+
+/*
+====================================================
+DINHEIRO / PATRIMÔNIO
+====================================================
+*/
+
+function money(value){
+
+    return "R$ "+
+        Math.max(0,value)
+        .toLocaleString("pt-BR");
+
+}
+
+
+function netWorth(p){
+
+    let total=p.money;
+
+    Object.keys(properties).forEach(index=>{
+
+        if(properties[index]===p.id){
+
+            total+=spaces[index][2];
+
+        }
+
+    });
+
+    if(p.car)
+        total+=p.car.value;
+
+    total+=p.houses*15000;
+    total-=p.loan;
+
+    return total;
+
+}
+
+
+/*
+====================================================
+DADOS
+====================================================
+*/
+
+function rollDice(){
+
+    if(rolled||gameEnded)return;
+
+    const p=players[current];
+
+    /*
+    PRISÃO: para sair, os dois dados precisam ser pares.
+    Se não conseguir, perde a rodada e continua preso.
+    */
+    if(p.jail>0){
+        rollPrisonDice(p);
+        return;
+    }
+
+    const modal=
+        document.getElementById("diceModal");
+
+    const d1=
+        document.getElementById("dice1");
+
+    const d2=
+        document.getElementById("dice2");
+
+
+    modal.classList.add("show");
+
+    d1.classList.add("rolling");
+    d2.classList.add("rolling");
+
+
+    let count=0;
+
+
+    const animation=
+        setInterval(()=>{
+
+            d1.textContent=
+                Math.floor(Math.random()*6)+1;
+
+            d2.textContent=
+                Math.floor(Math.random()*6)+1;
+
+            count++;
+
+            if(count>=12){
+
+                clearInterval(animation);
+
+                const n1=
+                    Math.floor(Math.random()*6)+1;
+
+                const n2=
+                    Math.floor(Math.random()*6)+1;
+
+                d1.textContent=n1;
+                d2.textContent=n2;
+
+                d1.classList.remove("rolling");
+                d2.classList.remove("rolling");
+
+                setTimeout(()=>{
+
+                    modal.classList.remove("show");
+
+                    movePlayer(n1+n2);
+
+                },700);
+
+            }
+
+        },100);
+
+}
+
+
+/*
+====================================================
+PRISÃO — DOIS DADOS PARES PARA SAIR
+====================================================
+*/
+
+function rollPrisonDice(p){
+
+    const modal=document.getElementById("diceModal");
+    const d1=document.getElementById("dice1");
+    const d2=document.getElementById("dice2");
+
+    modal.classList.add("show");
+    d1.classList.add("rolling");
+    d2.classList.add("rolling");
+
+    let ticks=0;
+    const animation=setInterval(()=>{
+        d1.textContent=Math.floor(Math.random()*6)+1;
+        d2.textContent=Math.floor(Math.random()*6)+1;
+        ticks++;
+
+        if(ticks>=12){
+            clearInterval(animation);
+            const n1=Math.floor(Math.random()*6)+1;
+            const n2=Math.floor(Math.random()*6)+1;
+            d1.textContent=n1;
+            d2.textContent=n2;
+            d1.classList.remove("rolling");
+            d2.classList.remove("rolling");
+
+            setTimeout(()=>{
+                modal.classList.remove("show");
+                rolled=true;
+
+                const saiu=(n1%2===0 && n2%2===0);
+
+                if(saiu){
+                    p.jail=0;
+                    log(`🔓 ${p.name} tirou ${n1} e ${n2}: os dois são pares! Saiu da prisão.`);
+                    update();
+                    setTimeout(()=>movePlayer(n1+n2),300);
+                }else{
+                    log(`🚓 ${p.name} tirou ${n1} e ${n2}. Precisa de dois números pares para sair da prisão.`);
+                    update();
+                }
+            },700);
+        }
+    },100);
+}
+
+
+/*
+====================================================
+MOVIMENTO ANIMADO
+====================================================
+*/
+
+function movePlayer(total){
+
+    const p=
+        players[current];
+
+
+    log(
+        `🎲 ${p.name} tirou ${total}.`
+    );
+
+
+    let steps=0;
+
+
+    const move=setInterval(()=>{
+
+        p.position=
+            (p.position+1)
+            %spaces.length;
+
+        steps++;
+
+        if(p.position===0){
+
+            p.money+=4000;
+
+            log(
+                `💰 ${p.name} passou pelo início e recebeu R$ 4.000.`
+            );
+
+        }
+
+        update();
+
+        if(steps>=total){
+
+            clearInterval(move);
+
+            setTimeout(
+                land,
+                300
+            );
+
+        }
+
+    },220);
+
+}
+
+
+/*
+====================================================
+CAIR NA CASA
+====================================================
+*/
+
+function land(){
+
+    const p=players[current];
+    const s=spaces[p.position];
+
+    rolled=true;
+
+    // Casas especiais da cidade
+    if(s[0]==="PARQUE"){
+        park(p);
+        return;
+    }
+
+    if(s[0]==="ESCOLA"){
+        school(p);
+        return;
+    }
+
+    if(s[0]==="VIAGEM"){
+        travel(p);
+        return;
+    }
+
+    if(s[0]==="BANCO" || s[0]==="BANCO CENTRAL"){
+        bankReward(p);
+        return;
+    }
+
+    if(s[0]==="MULTA"){
+        fine(p);
+        return;
+    }
+
+    if(s[1]==="property"){
+        property(p,p.position);
+    }
+    else if(s[1]==="tax"){
+        tax(p,p.position);
+    }
+    else if(s[1]==="event"){
+        event(p);
+    }
+    else if(s[1]==="family"){
+        family(p,s[0]);
+    }
+    else if(s[1]==="car"){
+        openCars();
+    }
+    else if(s[1]==="special"){
+        special(p,s);
+    }
+    else if(s[1]==="salary"){
+        p.money+=p.salary;
+        log(`💼 ${p.name} recebeu ${money(p.salary)} de salário.`);
+        update();
+    }
+    else if(s[1]==="jail"){
+        p.jail=1;
+        p.position=23;
+        log(`🚓 ${p.name} caiu na prisão! Para sair, precisa tirar os dois dados pares.`);
+        update();
+    }
+    else{
+        update();
+    }
+
+}
+
+
+/*
+====================================================
+CASAS INTERATIVAS
+====================================================
+*/
+
+function miniDice(title, description, callback){
+    showModal(
+        title,
+        `<p>${description}</p>
+         <div style="text-align:center;margin:18px 0">
+            <div id="miniDice" style="font-size:58px;font-weight:900;background:#fff;color:#111827;border-radius:18px;padding:12px;display:inline-block;min-width:90px;box-shadow:0 8px 25px #0008">?</div>
+         </div>`,
+        [{
+            text:"🎲 JOGAR DADO",
+            action:()=>{
+                const el=document.getElementById("miniDice");
+                let n=0, ticks=0;
+                const timer=setInterval(()=>{
+                    n=Math.floor(Math.random()*6)+1;
+                    el.textContent=n;
+                    ticks++;
+                    if(ticks>=8){
+                        clearInterval(timer);
+                        const final=Math.floor(Math.random()*6)+1;
+                        el.textContent=final;
+                        setTimeout(()=>callback(final),450);
+                    }
+                },90);
+            }
+        }]
+    );
+}
+
+function park(p){
+    const options=[
+        {name:"🎢 Parque de diversões", cost:1000, mult:1800, text:"Você se divertiu muito! Jogue o dado e receba o valor do dado × R$ 1.800."},
+        {name:"⚽ Jogar futebol", cost:500, mult:2500, text:"Você entrou em um torneio no parque! Dado × R$ 2.500."},
+        {name:"🍔 Piquenique", cost:300, mult:1200, text:"Um piquenique tranquilo. Dado × R$ 1.200 e +5 de felicidade."},
+        {name:"🎡 Roda-gigante", cost:800, mult:2000, text:"Uma volta incrível! Dado × R$ 2.000."}
+    ];
+    showModal("🌳 PARQUE CAIO CITY", "<p>Escolha o que você quer fazer no parque:</p>" + options.map((o,i)=>`<div class="shop"><strong>${o.name}</strong><br>💸 Custo: ${money(o.cost)}<br><small>${o.text}</small><button onclick="choosePark(${i})">ESCOLHER</button></div>`).join(""), [{text:"FECHAR",action:closeModal}]);
+    window._parkOptions=options;
+}
+
+function choosePark(i){
+    const p=players[current];
+    const o=window._parkOptions[i];
+    if(p.money<o.cost){ alert("Dinheiro insuficiente para essa atividade."); return; }
+    p.money-=o.cost;
+    closeModal();
+    miniDice(o.name, o.text, n=>{
+        const reward=n*o.mult;
+        p.money+=reward;
+        if(i===2) p.happiness=Math.min(100,p.happiness+5);
+        log(`🌳 ${p.name} foi ao parque, tirou ${n} e ganhou ${money(reward)}.`);
+        update();
+    });
+}
+
+function school(p){
+    showModal("🏫 ESCOLA", `<p>Você caiu na escola.</p><p>Você vai estudar e <strong>perder a próxima rodada</strong>, mas pode aumentar seu salário.</p>`, [
+        {text:"📚 ESTUDAR", action:()=>{
+            p.skipTurns=1;
+            p.salary+=1000;
+            p.happiness=Math.max(0,p.happiness-3);
+            log(`🏫 ${p.name} ficou uma rodada na escola e aumentou o salário em ${money(1000)}.`);
+            closeModal(); update();
+        }},
+        {text:"🏃 MATAR AULA", action:()=>{
+            p.skipTurns=0;
+            log(`🏫 ${p.name} decidiu não estudar.`);
+            closeModal(); update();
+        }}
+    ]);
+}
+
+function travel(p){
+    const trips=[
+        {name:"🏖️ Praia",cost:3000,happy:15,reward:1000},
+        {name:"🏔️ Montanha",cost:5000,happy:20,reward:3000},
+        {name:"🇧🇷 Viagem pelo Brasil",cost:8000,happy:25,reward:5000},
+        {name:"✈️ Internacional",cost:15000,happy:35,reward:10000}
+    ];
+    showModal("✈️ AGÊNCIA DE VIAGENS", "<p>Escolha sua viagem e pague o valor:</p>" + trips.map((t,i)=>`<div class="shop"><strong>${t.name}</strong><br>💸 ${money(t.cost)}<br>❤️ +${t.happy} felicidade<br>🎁 Bônus: ${money(t.reward)}<button onclick="chooseTrip(${i})">VIAJAR</button></div>`).join(""), [{text:"FECHAR",action:closeModal}]);
+    window._trips=trips;
+}
+
+function chooseTrip(i){
+    const p=players[current], t=window._trips[i];
+    if(p.money<t.cost){ alert("Dinheiro insuficiente para essa viagem."); return; }
+    p.money-=t.cost;
+    p.happiness=Math.min(100,p.happiness+t.happy);
+    p.money+=t.reward;
+    log(`✈️ ${p.name} viajou em ${t.name} e recebeu bônus de ${money(t.reward)}.`);
+    closeModal(); update();
+}
+
+function bankReward(p){
+    miniDice("🏦 BANCO CAIO CITY", "O banco liberou uma bonificação. Jogue o dado: cada ponto vale R$ 1.500.", n=>{
+        const gain=n*1500;
+        p.money+=gain;
+        log(`🏦 ${p.name} tirou ${n} no dado e recebeu ${money(gain)} do banco.`);
+        update();
+    });
+}
+
+function fine(p){
+    miniDice("🚨 MULTA", "Você recebeu uma multa. Jogue o dado: cada ponto vale R$ 700.", n=>{
+        const loss=n*700;
+        p.money-=loss;
+        log(`🚨 ${p.name} tirou ${n} e pagou uma multa de ${money(loss)}.`);
+        bankruptcy(p);
+        update();
+    });
+}
+
+
+/*
+====================================================
+PROPRIEDADE
+====================================================
+*/
+
+function property(p,index){
+
+    const s=
+        spaces[index];
+
+
+    if(properties[index]===undefined){
+
+        showModal(
+
+            "🏠 "+s[0],
+
+            `
+
+            <p>
+            Esta propriedade está disponível.
+            </p>
+
+            <p>
+            Preço:
+            <strong>${money(s[2])}</strong>
+            </p>
+
+            <p>
+            Comprar imóveis aumenta seu patrimônio
+            e permite cobrar aluguel.
+            </p>
+
+            `,
+
+            [
+
+                {
+
+                    text:"🏠 COMPRAR",
+
+                    action:()=>{
+
+                        if(p.money<s[2]){
+
+                            alert("Dinheiro insuficiente!");
+
+                            return;
+
+                        }
+
+                        p.money-=s[2];
+
+                        properties[index]=p.id;
+
+                        log(
+                            `🏠 ${p.name} comprou ${s[0]}.`
+                        );
+
+                        closeModal();
+
+                        update();
+
+                    }
+
+                },
+
+                {
+
+                    text:"❌ NÃO COMPRAR",
+
+                    action:closeModal
+
+                }
+
+            ]
+
+        );
+
+    }
+
+    else if(properties[index]!==p.id){
+
+        const owner=
+            players[properties[index]];
+
+        let rent=
+            Math.floor(s[2]*0.12);
+
+
+        p.money-=rent;
+
+        owner.money+=rent;
+
+
+        log(
+            `💸 ${p.name} pagou ${money(rent)} de aluguel para ${owner.name}.`
+        );
+
+
+        bankruptcy(p);
+
+        update();
+
+    }
+
+    else{
+
+        showModal(
+
+            "🏗️ Sua propriedade",
+
+            `
+
+            <p>
+            Você é dono de <strong>${s[0]}</strong>.
+            </p>
+
+            <p>
+            Melhorar custa R$ 15.000.
+            </p>
+
+            <p>
+            Melhorias aumentam seu patrimônio.
+            </p>
+
+            `,
+
+            [
+
+                {
+
+                    text:"🏗️ MELHORAR",
+
+                    action:()=>{
+
+                        if(p.money>=15000){
+
+                            p.money-=15000;
+
+                            p.houses++;
+
+                            log(
+                                `🏗️ ${p.name} melhorou ${s[0]}.`
+                            );
+
+                        }
+
+                        else{
+
+                            log(
+                                "❌ Dinheiro insuficiente."
+                            );
+
+                        }
+
+                        closeModal();
+
+                        update();
+
+                    }
+
+                },
+
+                {
+
+                    text:"FECHAR",
+
+                    action:closeModal
+
+                }
+
+            ]
+
+        );
+
+    }
+
+}
+
+
+/*
+====================================================
+IMPOSTOS
+====================================================
+*/
+
+function tax(p,index){
+
+    let amount=
+        spaces[index][2];
+
+
+    if(index===6)
+        amount=Math.floor(p.money*.05);
+
+    if(index===28)
+        amount=Math.floor(p.money*.10);
+
+    if(index===52)
+        amount=Math.floor(p.money*.08);
+
+
+    p.money-=amount;
+
+
+    log(
+        `💸 ${p.name} pagou ${money(amount)} de imposto.`
+    );
+
+
+    bankruptcy(p);
+
+    update();
+
+}
+
+
+/*
+====================================================
+EVENTOS
+====================================================
+*/
+
+function event(p){
+
+    const events=[
+
+        [
+            "🍀 DINHEIRO ENCONTRADO",
+            "Você encontrou R$ 5.000!",
+            ()=>{
+                p.money+=5000;
+            }
+        ],
+
+        [
+            "📈 INVESTIMENTO",
+            "Seu investimento rendeu R$ 8.000!",
+            ()=>{
+                p.money+=8000;
+            }
+        ],
+
+        [
+            "🚗 MANUTENÇÃO",
+            "Seu carro precisou de manutenção.",
+            ()=>{
+                p.money-=p.car ? 2500 : 500;
+            }
+        ],
+
+        [
+            "🏥 DESPESA",
+            "Uma despesa inesperada de R$ 3.000 apareceu.",
+            ()=>{
+                p.money-=3000;
+            }
+        ],
+
+        [
+            "🎉 FÉRIAS",
+            "Você ganhou R$ 3.000 e ficou mais feliz!",
+            ()=>{
+                p.money+=3000;
+                p.happiness=Math.min(100,p.happiness+10);
+            }
+        ],
+
+        [
+            "⚽ TORNEIO",
+            "Você venceu um torneio e ganhou R$ 6.000!",
+            ()=>{
+                p.money+=6000;
+            }
+        ],
+
+        [
+            "🎓 CURSO",
+            "Você se qualificou. Seu salário aumentou R$ 1.500.",
+            ()=>{
+                p.salary+=1500;
+            }
+        ],
+
+        [
+            "🎰 LOTERIA",
+            "Você ganhou R$ 12.000!",
+            ()=>{
+                p.money+=12000;
+            }
+        ],
+
+        [
+            "😢 DIA RUIM",
+            "Uma sequência de despesas custou R$ 2.000.",
+            ()=>{
+                p.money-=2000;
+                p.happiness=Math.max(0,p.happiness-5);
+            }
+        ]
+
+    ];
+
+
+    const e=
+        events[
+            Math.floor(
+                Math.random()*events.length
+            )
+        ];
+
+
+    showModal(
+
+        e[0],
+
+        `<p>${e[1]}</p>`,
+
+        [
+
+            {
+
+                text:"✨ CONTINUAR",
+
+                action:()=>{
+
+                    e[2]();
+
+                    log(
+                        `${e[0]} — ${e[1]}`
+                    );
+
+                    closeModal();
+
+                    bankruptcy(p);
+
+                    update();
+
+                }
+
+            }
+
+        ]
+
+    );
+
+}
+
+
+/*
+====================================================
+FAMÍLIA
+====================================================
+*/
+
+function family(p,type){
+
+    if(type==="CASAMENTO"){
+
+        if(p.family){
+
+            log(
+                `💍 ${p.name} já é casado.`
+            );
+
+            return;
+
+        }
+
+
+        showModal(
+
+            "💍 CASAMENTO",
+
+            `
+
+            <p>
+            Você encontrou o amor da sua vida!
+            </p>
+
+            <p>
+            Festa de casamento:
+            <strong>R$ 10.000</strong>
+            </p>
+
+            `,
+
+            [
+
+                {
+
+                    text:"💍 CASAR",
+
+                    action:()=>{
+
+                        if(p.money<10000){
+
+                            alert(
+                                "Você precisa de R$ 10.000."
+                            );
+
+                            return;
+
+                        }
+
+                        p.money-=10000;
+
+                        p.family=true;
+
+                        p.happiness=
+                            Math.min(
+                                100,
+                                p.happiness+20
+                            );
+
+                        log(
+                            `💍 ${p.name} se casou!`
+                        );
+
+                        closeModal();
+
+                        update();
+
+                    }
+
+                },
+
+                {
+
+                    text:"DEIXAR PARA DEPOIS",
+
+                    action:closeModal
+
+                }
+
+            ]
+
+        );
+
+    }
+
+    else if(type==="FILHO"){
+
+        if(!p.family){
+
+            showModal(
+
+                "👶 FAMÍLIA",
+
+                `<p>Você precisa se casar antes de ter filhos.</p>`,
+
+                [{text:"OK",action:closeModal}]
+
+            );
+
+            return;
+
+        }
+
+        if(p.children>=4){
+            showModal("👶 LIMITE DE FILHOS",`<p>Você já tem 4 filhos nesta partida.</p>`,[{text:"FECHAR",action:closeModal}]);
+            return;
+        }
+
+        showModal(
+
+            "👶 CASA DO FILHO",
+
+            `
+            <p>Escolha o nome e o gênero do novo filho.</p>
+            <label>Nome do filho</label>
+            <input id="childName" maxlength="18" placeholder="Ex.: Lucas">
+            <label>Gênero</label>
+            <select id="childGender">
+                <option value="Menino">👦 Menino</option>
+                <option value="Menina">👧 Menina</option>
+            </select>
+            <p>💰 Custo inicial: <strong>R$ 5.000</strong></p>
+            `,
+
+            [
+                {
+                    text:"👶 TER FILHO",
+                    action:()=>{
+                        const name=(document.getElementById("childName").value||"Filho "+(p.children+1)).trim();
+                        const gender=document.getElementById("childGender").value;
+                        if(p.money<5000){ alert("Dinheiro insuficiente."); return; }
+                        p.money-=5000;
+                        p.children++;
+                        p.childList.push({name,gender});
+                        p.happiness=Math.min(100,p.happiness+10);
+                        log(`👶 ${p.name} teve ${gender.toLowerCase()} chamado ${name}.`);
+                        closeModal();
+                        update();
+                    }
+                },
+                {text:"AGORA NÃO",action:closeModal}
+            ]
+        );
+
+    }
+
+    else{
+
+        p.happiness=
+            Math.min(
+                100,
+                p.happiness+5
+            );
+
+        log(
+            `❤️ ${p.name} teve um momento feliz com a família.`
+        );
+
+        update();
+
+    }
+
+}
+
+
+/*
+====================================================
+CARROS
+====================================================
+*/
+
+const cars=[
+
+    {
+        name:"🚗 Popular",
+        price:25000,
+        value:25000,
+        maintenance:500
+    },
+
+    {
+        name:"🚙 SUV",
+        price:70000,
+        value:70000,
+        maintenance:1200
+    },
+
+    {
+        name:"🏎️ Esportivo",
+        price:150000,
+        value:150000,
+        maintenance:2500
+    },
+
+    {
+        name:"🚘 Luxo",
+        price:250000,
+        value:250000,
+        maintenance:4000
+    }
+
+];
+
+
+function openCars(){
+
+    const p=
+        players[current];
+
+
+    showModal(
+
+        "🚗 CONCESSIONÁRIA CAIO CITY",
+
+        `
+
+        <p>
+        Escolha seu carro.
+        </p>
+
+        ${cars.map((car,i)=>`
+
+            <div class="shop">
+
+                <strong>${car.name}</strong>
+
+                <br>
+
+                💰 Preço:
+                ${money(car.price)}
+
+                <br>
+
+                🔧 Manutenção:
+                ${money(car.maintenance)}
+
+                <button
+                onclick="buyCar(${i})">
+
+                COMPRAR
+
+                </button>
+
+            </div>
+
+        `).join("")}
+
+        `,
+
+        [
+
+            {
+                text:"FECHAR",
+                action:closeModal
+            }
+
+        ]
+
+    );
+
+}
+
+
+function buyCar(index){
+
+    const p=
+        players[current];
+
+    const car=
+        cars[index];
+
+
+    if(p.money<car.price){
+
+        alert(
+            "Você não tem dinheiro suficiente."
+        );
+
+        return;
+
+    }
+
+
+    p.money-=car.price;
+
+    p.car=car;
+
+
+    log(
+        `🚗 ${p.name} comprou ${car.name}.`
+    );
+
+
+    closeModal();
+
+    update();
+
+}
+
+
+/*
+====================================================
+BANCO
+====================================================
+*/
+
+function openBank(){
+
+    const p=players[current];
+
+    showModal(
+        "🏦 BANCO CAIO CITY",
+        `
+        <p>Seu dinheiro: <strong>${money(p.money)}</strong></p>
+        <p>Dívida atual: <strong>${money(p.loan)}</strong></p>
+        <hr>
+        <label>Quanto você quer pegar emprestado?</label>
+        <input id="loanAmount" type="number" min="5000" max="100000" step="1000" value="20000">
+        <p style="color:#94a3b8;font-size:12px">O banco cobra 20% de juros. Ex.: R$ 20.000 viram R$ 24.000 de dívida.</p>
+        `,
+        [
+            {
+                text:"💰 PEGAR EMPRÉSTIMO",
+                action:()=>{
+                    let amount=Number(document.getElementById("loanAmount").value);
+                    if(!Number.isFinite(amount)) amount=5000;
+                    amount=Math.round(Math.min(100000,Math.max(5000,amount))/1000)*1000;
+                    const debt=Math.round(amount*1.2);
+                    p.money+=amount;
+                    p.loan+=debt;
+                    log(`🏦 ${p.name} pegou ${money(amount)} e ficou com ${money(debt)} de nova dívida.`);
+                    closeModal();
+                    update();
+                }
+            },
+            {
+                text:"💳 PAGAR DÍVIDA",
+                action:()=>{
+                    if(p.loan>0 && p.money>=p.loan){
+                        p.money-=p.loan; p.loan=0;
+                        log(`✅ ${p.name} quitou sua dívida.`);
+                    } else { alert("Você não tem dinheiro suficiente para quitar a dívida inteira."); }
+                    closeModal(); update();
+                }
+            },
+            {text:"FECHAR",action:closeModal}
+        ]
+    );
+}
+
+/*
+====================================================
+MERCADO DE INVESTIMENTOS — NOVO
+====================================================
+*/
+
+function openMarket(){
+    const p=players[current];
+    if(p.investedThisTurn){
+        showModal("📈 MERCADO",`<p>Você já fez um investimento nesta rodada.</p>`,[{text:"FECHAR",action:closeModal}]);
+        return;
+    }
+    const options=[
+        {name:"🟢 CONSERVADOR",cost:5000,win:6500,lose:4500},
+        {name:"🟡 EQUILIBRADO",cost:10000,win:15000,lose:7500},
+        {name:"🔴 OUSADO",cost:20000,win:40000,lose:10000}
+    ];
+    showModal("📈 BOLSA DE CAIO CITY",`
+        <p>Escolha um investimento. O resultado sai no final da rodada.</p>
+        ${options.map((o,i)=>`<div class="shop"><strong>${o.name}</strong><br>💰 Entrada: ${money(o.cost)}<br>📈 Se subir: ${money(o.win)}<br>📉 Se cair: ${money(o.lose)}<button onclick="invest(${i})">INVESTIR</button></div>`).join("")}
+    `,[{text:"FECHAR",action:closeModal}]);
+}
+
+function invest(index){
+    const p=players[current];
+    const options=[
+        {name:"Conservador",cost:5000,win:6500,lose:4500},
+        {name:"Equilibrado",cost:10000,win:15000,lose:7500},
+        {name:"Ousado",cost:20000,win:40000,lose:10000}
+    ];
+    const o=options[index];
+    if(p.money<o.cost){ alert("Dinheiro insuficiente."); return; }
+    p.money-=o.cost;
+    const up=Math.random()>=0.45;
+    const result=up?o.win:o.lose;
+    p.money+=result;
+    p.investedThisTurn=true;
+    log(`📈 ${p.name} investiu no perfil ${o.name} e ${up?"teve lucro":"teve prejuízo"}: ${money(result)} retornados.`);
+    closeModal(); update();
+}
+
+
+/*
+====================================================
+CASAS ESPECIAIS
+====================================================
+*/
+
+function special(p,s){
+
+    p.money+=s[2];
+
+    log(
+        `🏦 ${p.name} recebeu ${money(s[2])}.`
+    );
+
+    update();
+
+}
+
+
+/*
+====================================================
+PRÓXIMA RODADA
+====================================================
+*/
+
+function nextTurn(){
+
+    if(!rolled)return;
+
+
+    const p=
+        players[current];
+
+
+    /*
+    ESCOLA: fica uma rodada parado estudando.
+    */
+    if(p.skipTurns>0){
+        p.skipTurns--;
+        log(`🏫 ${p.name} passou esta rodada na escola. Não jogou os dados.`);
+        rolled=false;
+
+        let next=current+1;
+        while(true){
+            if(next>=players.length) next=0;
+            if(players[next].alive) break;
+            next++;
+        }
+        current=next;
+        players[current].investedThisTurn=false;
+        log(`➡️ Agora é a vez de ${players[current].name}.`);
+        update();
+        return;
+    }
+
+
+    /*
+    despesas da família
+    */
+
+    if(p.children>0){
+
+        const cost=
+            p.children*1000;
+
+        p.money-=cost;
+
+        log(
+            `👶 ${p.name} pagou ${money(cost)} pelos filhos.`
+        );
+
+    }
+
+
+    /*
+    manutenção
+    */
+
+    if(p.car){
+
+        p.money-=p.car.maintenance;
+
+        log(
+            `🚗 ${p.name} pagou ${money(p.car.maintenance)} de manutenção.`
+        );
+
+    }
+
+
+    /*
+    salário
+    */
+
+    p.money+=p.salary;
+
+    log(
+        `💼 ${p.name} recebeu ${money(p.salary)}.`
+    );
+
+
+    bankruptcy(p);
+
+
+    if(gameEnded)return;
+
+
+    let next=
+        current+1;
+
+
+    while(true){
+
+        if(next>=players.length)
+            next=0;
+
+        if(players[next].alive)
+            break;
+
+        next++;
+
+    }
+
+
+    current=next;
+
+    players[current].investedThisTurn=false;
+
+    rolled=false;
+
+
+    log(
+        `➡️ Agora é a vez de ${players[current].name}.`
+    );
+
+
+    update();
+
+}
+
+
+/*
+====================================================
+FALÊNCIA
+====================================================
+*/
+
+function bankruptcy(p){
+
+    const BANKRUPTCY_LIMIT=-10000;
+
+    if(p.money>=0)return;
+
+    if(p.car){
+        p.money+=Math.floor(p.car.value*.7);
+        log(`🚗 ${p.name} vendeu o carro para pagar dívidas.`);
+        p.car=null;
+    }
+
+    const owned=Object.keys(properties).filter(i=>properties[i]===p.id);
+    for(const property of owned){
+        if(p.money>=BANKRUPTCY_LIMIT) break;
+        delete properties[property];
+        p.money+=Math.floor(spaces[property][2]*.7);
+        log(`🏠 ${p.name} vendeu ${spaces[property][0]}.`);
+    }
+
+    if(p.money<BANKRUPTCY_LIMIT){
+        p.alive=false;
+        log(`💥 ${p.name} FALIU! Limite de falência: ${money(BANKRUPTCY_LIMIT)}.`);
+        checkWinner();
+    } else if(p.money<0){
+        log(`⚠️ ${p.name} está endividado, mas ainda não faliu.`);
+    }
+}
+
+
+/*
+====================================================
+VENCEDOR
+====================================================
+*/
+
+function checkWinner(){
+
+    const alive=
+        players.filter(
+            p=>p.alive
+        );
+
+
+    if(alive.length===1){
+
+        finish(alive[0]);
+
+        return;
+
+    }
+
+
+    const millionaire=
+        players.find(
+            p=>netWorth(p)>=1000000
+        );
+
+
+    if(millionaire){
+
+        finish(millionaire);
+
+    }
+
+}
+
+
+function finish(p){
+
+    gameEnded=true;
+
+
+    showModal(
+
+        "🏆 CAIO CITY — CAMPEÃO!",
+
+        `
+
+        <h2>👑 ${p.name}</h2>
+
+        <p>
+        Você dominou Caio City!
+        </p>
+
+        <br>
+
+        <p>
+        💰 Patrimônio:
+        <strong>${money(netWorth(p))}</strong>
+        </p>
+
+        <p>
+        💼 Profissão:
+        ${p.job}
+        </p>
+
+        <p>
+        👨‍👩‍👧 Filhos:
+        ${p.children}
+        </p>
+
+        <p>
+        🚗 Carro:
+        ${p.car?p.car.name:"Nenhum"}
+        </p>
+
+        `,
+
+        [
+
+            {
+
+                text:"🔄 JOGAR NOVAMENTE",
+
+                action:()=>{
+                    location.reload();
+                }
+
+            }
+
+        ]
+
+    );
+
+}
+
+
+/*
+====================================================
+MODAL
+====================================================
+*/
+
+function showModal(title,content,buttons){
+
+    const modal=
+        document.getElementById("modal");
+
+    const box=
+        document.getElementById("modalContent");
+
+
+    box.innerHTML=`
+
+        <h2>${title}</h2>
+
+        ${content}
+
+        <div id="modalButtons"></div>
+
+    `;
+
+
+    const area=
+        document.getElementById("modalButtons");
+
+
+    buttons.forEach(b=>{
+
+        const btn=
+            document.createElement("button");
+
+        btn.textContent=
+            b.text;
+
+        btn.onclick=
+            b.action;
+
+        area.appendChild(btn);
+
+    });
+
+
+    modal.classList.add("show");
+
+}
+
+
+function closeModal(){
+
+    document
+        .getElementById("modal")
+        .classList
+        .remove("show");
+
+}
+
+
+function log(text){
+
+    const box=
+        document.getElementById("log");
+
+    box.innerHTML=
+        `<div>${text}</div>`+
+        box.innerHTML;
+
+}
+
+
+</script>
+
+</body>
+</html>
