@@ -454,16 +454,150 @@ input,select{
 }
 
 @media(max-width:750px){
-    .player-grid{
-        grid-template-columns:1fr 1fr;
+    body{
+        min-width:0;
+        overflow-x:hidden;
     }
 
-    .board{
-        min-width:650px;
+    .header{
+        height:auto;
+        min-height:60px;
+        padding:10px 12px;
+        gap:8px;
+        flex-wrap:wrap;
+    }
+
+    .logo{
+        font-size:21px;
+    }
+
+    .turn{
+        padding:8px 10px;
+        font-size:12px;
+        margin-left:auto;
+    }
+
+    .game{
+        padding:8px;
+    }
+
+    .layout{
+        display:flex;
+        flex-direction:column;
+        gap:10px;
+        width:100%;
     }
 
     .board-area{
+        width:100%;
+        padding:7px;
+        border-radius:16px;
+        overflow:visible;
+    }
+
+    .board{
+        width:100%;
+        min-width:0;
+        max-width:100%;
+        gap:2px;
+        padding:3px;
+        border-radius:12px;
+    }
+
+    .cell{
+        min-width:0;
+        min-height:0;
+        padding:2px;
+        border-radius:4px;
+        font-size:clamp(5px,1.8vw,9px);
+    }
+
+    .cell-name{
+        overflow:hidden;
+        word-break:break-word;
+    }
+
+    .cell-price{
+        font-size:clamp(5px,1.55vw,8px);
+    }
+
+    .property-bar{
+        height:3px;
+        margin:-2px -2px 1px;
+    }
+
+    .tokens{
+        min-height:clamp(9px,3vw,20px);
+        gap:1px;
+    }
+
+    .token{
+        width:clamp(10px,4.5vw,20px);
+        height:clamp(10px,4.5vw,20px);
+        border-width:1px;
+        font-size:clamp(5px,1.8vw,9px);
+    }
+
+    .center{
+        padding:5px;
+        border-radius:9px;
+    }
+
+    .center h2{
+        font-size:clamp(14px,5vw,32px);
+    }
+
+    .center p{
+        margin-top:2px;
+        font-size:clamp(7px,2.2vw,14px);
+    }
+
+    .sidebar{
+        width:100%;
+    }
+
+    .panel{
+        padding:11px;
+        border-radius:14px;
+    }
+
+    .actions{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+
+    button{
+        min-height:46px;
+        padding:11px 10px;
+        font-size:14px;
+        touch-action:manipulation;
+    }
+
+    .log{
+        height:150px;
+        font-size:11px;
+    }
+
+    .dice-modal{
+        padding:12px;
+    }
+
+    .dice{
+        width:82px;
+        height:82px;
+        font-size:42px;
+        border-radius:16px;
+        margin:6px;
+    }
+
+    .modal{
+        padding:12px;
+    }
+
+    .modal-content{
+        max-height:90vh;
         overflow:auto;
+        padding:18px;
+        border-radius:18px;
     }
 }
 
@@ -473,8 +607,49 @@ input,select{
     }
 
     .setup{
-        margin:15px;
-        padding:20px;
+        margin:10px;
+        padding:16px;
+        border-radius:18px;
+    }
+
+    .setup h1{
+        font-size:30px;
+    }
+
+    .subtitle{
+        font-size:14px;
+    }
+
+    .stats{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .stat{
+        padding:8px;
+        font-size:12px;
+    }
+
+    .player-card{
+        font-size:12px;
+    }
+}
+
+@media(max-width:360px){
+    .game{
+        padding:5px;
+    }
+
+    .board-area{
+        padding:4px;
+    }
+
+    .actions{
+        grid-template-columns:1fr;
+    }
+
+    .board{
+        gap:1px;
+        padding:2px;
     }
 }
 </style>
@@ -779,6 +954,8 @@ function createInputs(){
 
     for(let i=0;i<count;i++){
 
+        const randomJob = Math.floor(Math.random()*jobs.length);
+
         area.innerHTML+=`
 
         <div class="player-box">
@@ -808,7 +985,7 @@ function createInputs(){
 
             ${jobs.map((j,index)=>`
 
-                <option value="${index}">
+                <option value="${index}" ${index===randomJob?"selected":""}>
                     ${j[0]} — R$ ${j[1].toLocaleString("pt-BR")}
                 </option>
 
